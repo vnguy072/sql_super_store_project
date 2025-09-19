@@ -80,7 +80,7 @@ SELECT
 FROM super_store;
 ```
 
-  2.Find the top 10 products (by product_name) with the highest sales, including quantity sold and profit margin for each.
+ 2.Find the top 10 products (by product_name) with the highest sales, including quantity sold and profit margin for each.
 ```sql
 SELECT 
     product_name,
@@ -134,7 +134,7 @@ FROM monthly
 ORDER BY month;
 ```
 
-5.Analyze sales and profit margin by city and state, identifying the top 5 best-performing states.
+   5.Analyze sales and profit margin by city and state, identifying the top 5 best-performing states.
 ```sql
 SELECT
     state,
@@ -147,7 +147,7 @@ ORDER BY profit_margin_pct DESC
 LIMIT 5;
 ```
 
-6.Calculate average shipping time (ship_date - order_date) by ship_mode and city to identify efficiency patterns.
+   6.Calculate average shipping time (ship_date - order_date) by ship_mode and city to identify efficiency patterns.
 ```sql
 SELECT 
     ship_mode,
@@ -161,7 +161,7 @@ GROUP BY ship_mode, city
 ORDER BY avg_shipping_days;
 ```
 
-7.Analyze the relationship between discounts and profit: compare average profit of discounted vs non-discounted orders by category.
+   7.Analyze the relationship between discounts and profit: compare average profit of discounted vs non-discounted orders by category.
 ```sql
 SELECT 
     category,
@@ -172,7 +172,7 @@ GROUP BY category, discount_flag
 ORDER BY category, discount_flag;
 ```
 
-8.Rank customers by total sales within each region, showing top 3 customers per state.
+   8.Rank customers by total sales within each region, showing top 3 customers per state.
 ```sql
 WITH customer_sales AS (
     SELECT 
@@ -196,7 +196,7 @@ WHERE rnk <= 3
 ORDER BY state, rnk, total_sales DESC;
 ```
 
-9.Calculate running total of sales over time (by month) to show cumulative business growth.
+   9.Calculate running total of sales over time (by month) to show cumulative business growth.
 ```sql
 WITH monthly_sales AS (
     SELECT 
@@ -211,8 +211,10 @@ SELECT
     SUM(total_sales) OVER (ORDER BY month) AS running_total_sales
 FROM monthly_sales
 ORDER BY month;
+```
 
-10.Compare monthly sales with the same month from the previous year and calculate growth percentage.
+   10.Compare monthly sales with the same month from the previous year and calculate growth percentage.
+```sql
 WITH monthly_sales AS (
     SELECT 
         YEAR(STR_TO_DATE(order_date, '%m/%d/%Y')) AS year,
@@ -236,7 +238,7 @@ FROM monthly_sales
 ORDER BY year, month;
 ```
 
-11.Calculate Customer Lifetime Value: total sales, number of orders, and time span from first to last order for each customer.
+   11.Calculate Customer Lifetime Value: total sales, number of orders, and time span from first to last order for each customer.
 ```sql
 SELECT 
     customer_id,
@@ -253,7 +255,7 @@ GROUP BY customer_id
 ORDER BY total_sales DESC;
 ```
 
-12.Find products that have sales higher than the average sales of their respective category, showing the percentage above category average.
+   12.Find products that have sales higher than the average sales of their respective category, showing the percentage above category average.
 ```sql
 WITH category_avg AS (
     SELECT 
@@ -279,7 +281,7 @@ HAVING SUM(s.sales) > c.avg_cat_sales
 ORDER BY pct_above_avg DESC;
 ```
 
-13.Identify and analyze loss-making orders (negative profit): count by category and identify patterns and potential root causes.
+   13.Identify and analyze loss-making orders (negative profit): count by category and identify patterns and potential root causes.
 ```sql
 SELECT 
     category,
@@ -292,7 +294,7 @@ GROUP BY category
 ORDER BY total_loss ASC;
 ```
 
-14.Find pairs of sub_categories that are frequently purchased together in the same order_id (simple co-occurrence analysis).
+   14.Find pairs of sub_categories that are frequently purchased together in the same order_id (simple co-occurrence analysis).
 ```sql
 SELECT 
     a.sub_category AS subcat_1,
@@ -307,7 +309,7 @@ ORDER BY order_count DESC
 LIMIT 10;
 ```
 
-15.Create a comprehensive monthly report using CTEs: include sales, profit, top category, top customer segment, and growth rate compared to previous month.
+   15.Create a comprehensive monthly report using CTEs: include sales, profit, top category, top customer segment, and growth rate compared to previous month.
 ```sql
 WITH monthly AS (
     SELECT 
@@ -354,7 +356,7 @@ LEFT JOIN top_segment ts ON m.month = ts.month AND ts.rnk = 1
 ORDER BY m.month;
 ```
 
-4.Findings
+4. Findings
 - Customer Behavior: Segment contributions and top-spending customers were identified.
 - Product Performance: Top products and categories were highlighted.
 - Sales Trends: Seasonal fluctuations and monthly growth rates were analyzed.
