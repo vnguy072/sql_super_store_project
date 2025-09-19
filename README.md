@@ -68,7 +68,8 @@ Project Structure
 
 3. Data Analysis & Findings
 The project contains multiple SQL analyses to explore business insights, including:
-  1.Calculate the overall business metrics: total number of orders, unique customers, total sales, total profit, and average profit margin.
+
+   1.Calculate the overall business metrics: total number of orders, unique customers, total sales, total profit, and average profit margin.
 ```sql
 SELECT 
     COUNT(DISTINCT order_id) AS total_orders,
