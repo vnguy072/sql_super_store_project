@@ -81,7 +81,7 @@ FROM super_store;
 ```
 
   2.Find the top 10 products (by product_name) with the highest sales, including quantity sold and profit margin for each.
-```sqlsql
+```sql
 SELECT 
     product_name,
     SUM(sales) AS total_sales,
@@ -105,7 +105,7 @@ GROUP BY segment;
 ```
 
 4.Calculate monthly sales and profit trends over time to identify seasonal patterns and growth trends.
-```sqlsql
+```sql
 WITH monthly AS (
     SELECT
         DATE_FORMAT(STR_TO_DATE(order_date, '%m/%d/%Y'), '%Y-%m') AS month,
@@ -360,20 +360,25 @@ ORDER BY m.month;
 - Sales Trends: Seasonal fluctuations and monthly growth rates were analyzed.
 - Profitability Insights: Loss-making orders and discount impact were examined.
 - Operational Insights: Shipping efficiency patterns were uncovered.
+
 5. Reports & Insights
 - Overall Performance: Revenue, customer segmentation, and category-level insights.
 - Trend Monitoring: Monthly and cumulative growth tracking.
 - Customer Reports: Lifetime value and top customers.
 - Product Reports: Top-selling products and best-performing categories.
+
 6. Conclusion
+
 This project demonstrates a complete SQL workflow for retail sales analysis—from database setup and cleaning to advanced business insights. The results provide actionable guidance for business decisions and show the power of SQL in data-driven analytics.
+
 7. How to Use
 - Clone the Repository: Download the project from GitHub.
 - Set Up Database: Run the SQL scripts to create and populate the super_store table.
 - Run Analyses: Execute the provided queries to generate insights.
 - Explore & Extend: Modify or create queries to answer additional business questions.
 
-Author: Van Huu Hien
+Author: Van Huu Hien Nguyen
+
 This project is part of my SQL portfolio and reflects my learning journey as a Business Analytics student, showcasing skills in data cleaning, analysis, and reporting.
 
 
