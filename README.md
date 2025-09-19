@@ -23,7 +23,7 @@ Project Structure
 - Database Creation: Create a database to store Superstore sales data.
 
 - Table Creation: A table named super_store stores columns such as order ID, order date, ship date, customer ID, product category, sub-category, sales, profit, discount, quantity, ship mode, segment, city, and state.
-
+```sql
     CREATE TABLE super_store (
         order_id VARCHAR(50) PRIMARY KEY,
         order_date VARCHAR(20),
@@ -46,6 +46,7 @@ Project Structure
         profit FLOAT,
         ship_mode VARCHAR(50)
     );
+```
 
 2. Data Exploration & Cleaning
 
@@ -56,17 +57,19 @@ Project Structure
 - Unique Products & Categories: Identify all products and categories.
 
 - Null Check: Detect and handle missing data.
-
+```sql
     SELECT COUNT(*) FROM super_store;
     SELECT COUNT(DISTINCT customer_id) FROM super_store;
     SELECT DISTINCT category FROM super_store;
 
     SELECT * FROM super_store
     WHERE order_date IS NULL OR customer_id IS NULL OR category IS NULL;
+```
 
 3. Data Analysis & Findings
 The project contains multiple SQL analyses to explore business insights, including:
   1.Calculate the overall business metrics: total number of orders, unique customers, total sales, total profit, and average profit margin.
+```sql
 SELECT 
     COUNT(DISTINCT order_id) AS total_orders,
     COUNT(DISTINCT customer_id) AS unique_customers,
@@ -74,8 +77,10 @@ SELECT
     SUM(profit) AS total_profit,
     SUM(profit) / NULLIF(SUM(sales), 0) AS avg_profit_margin
 FROM super_store;
+```
 
   2.Find the top 10 products (by product_name) with the highest sales, including quantity sold and profit margin for each.
+```sqlsql
 SELECT 
     product_name,
     SUM(sales) AS total_sales,
@@ -85,8 +90,10 @@ FROM super_store
 GROUP BY product_name
 ORDER BY total_sales DESC
 LIMIT 10;
+```
 
 3.Analyze sales, profit, and average order value by customer segment (Consumer, Corporate, Home Office).
+```sql
 SELECT 
     segment,
     SUM(sales) AS total_sales,
@@ -94,8 +101,10 @@ SELECT
     SUM(sales) / COUNT(order_id) AS average_order_value
 FROM super_store
 GROUP BY segment;
+```
 
 4.Calculate monthly sales and profit trends over time to identify seasonal patterns and growth trends.
+```sqlsql
 WITH monthly AS (
     SELECT
         DATE_FORMAT(STR_TO_DATE(order_date, '%m/%d/%Y'), '%Y-%m') AS month,
@@ -122,8 +131,10 @@ SELECT
     ) AS profit_growth_pct
 FROM monthly
 ORDER BY month;
+```
 
 5.Analyze sales and profit margin by city and state, identifying the top 5 best-performing states.
+```sql
 SELECT
     state,
     SUM(sales) AS total_sales,
@@ -133,8 +144,10 @@ FROM super_store
 GROUP BY state
 ORDER BY profit_margin_pct DESC
 LIMIT 5;
+```
 
 6.Calculate average shipping time (ship_date - order_date) by ship_mode and city to identify efficiency patterns.
+```sql
 SELECT 
     ship_mode,
     city,
@@ -145,8 +158,10 @@ SELECT
 FROM super_store
 GROUP BY ship_mode, city 
 ORDER BY avg_shipping_days;
+```
 
 7.Analyze the relationship between discounts and profit: compare average profit of discounted vs non-discounted orders by category.
+```sql
 SELECT 
     category,
     CASE WHEN discount > 0 THEN 'Discounted' ELSE 'Non-Discounted' END AS discount_flag,
@@ -154,8 +169,10 @@ SELECT
 FROM super_store
 GROUP BY category, discount_flag
 ORDER BY category, discount_flag;
+```
 
 8.Rank customers by total sales within each region, showing top 3 customers per state.
+```sql
 WITH customer_sales AS (
     SELECT 
         state,
@@ -176,8 +193,10 @@ SELECT *
 FROM ranked
 WHERE rnk <= 3
 ORDER BY state, rnk, total_sales DESC;
+```
 
 9.Calculate running total of sales over time (by month) to show cumulative business growth.
+```sql
 WITH monthly_sales AS (
     SELECT 
         DATE_FORMAT(STR_TO_DATE(order_date, '%m/%d/%Y'), '%Y-%m') AS month,
@@ -214,8 +233,10 @@ SELECT
     ) AS yoy_growth_pct
 FROM monthly_sales
 ORDER BY year, month;
+```
 
 11.Calculate Customer Lifetime Value: total sales, number of orders, and time span from first to last order for each customer.
+```sql
 SELECT 
     customer_id,
     SUM(sales) AS total_sales,
@@ -229,8 +250,10 @@ SELECT
 FROM super_store
 GROUP BY customer_id
 ORDER BY total_sales DESC;
+```
 
 12.Find products that have sales higher than the average sales of their respective category, showing the percentage above category average.
+```sql
 WITH category_avg AS (
     SELECT 
         category,
@@ -253,8 +276,10 @@ JOIN category_avg c
 GROUP BY s.product_id, s.product_name, s.category, c.avg_cat_sales
 HAVING SUM(s.sales) > c.avg_cat_sales
 ORDER BY pct_above_avg DESC;
+```
 
 13.Identify and analyze loss-making orders (negative profit): count by category and identify patterns and potential root causes.
+```sql
 SELECT 
     category,
     COUNT(order_id) AS loss_orders,
@@ -264,8 +289,10 @@ FROM super_store
 WHERE profit < 0
 GROUP BY category
 ORDER BY total_loss ASC;
+```
 
 14.Find pairs of sub_categories that are frequently purchased together in the same order_id (simple co-occurrence analysis).
+```sql
 SELECT 
     a.sub_category AS subcat_1,
     b.sub_category AS subcat_2,
@@ -277,8 +304,10 @@ JOIN super_store b
 GROUP BY a.sub_category, b.sub_category
 ORDER BY order_count DESC
 LIMIT 10;
+```
 
 15.Create a comprehensive monthly report using CTEs: include sales, profit, top category, top customer segment, and growth rate compared to previous month.
+```sql
 WITH monthly AS (
     SELECT 
         DATE_FORMAT(STR_TO_DATE(order_date, '%m/%d/%Y'), '%Y-%m') AS month,
@@ -322,7 +351,7 @@ FROM monthly m
 LEFT JOIN top_category tc ON m.month = tc.month AND tc.rnk = 1
 LEFT JOIN top_segment ts ON m.month = ts.month AND ts.rnk = 1
 ORDER BY m.month;
-
+```
 
 4.Findings
 - Customer Behavior: Segment contributions and top-spending customers were identified.
